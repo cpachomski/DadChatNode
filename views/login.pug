@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	div.row
+		form.col.s12
+			div.row
+				div.input-field.col.s12
+					input.validate(id='email', type='email')
+					label(for='email') Email
+				div.input-field.col.s12
+					input.validate(id='password', type='password')
+					label(for='password') Password
