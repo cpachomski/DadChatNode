@@ -27,7 +27,8 @@
     "clean": "rm -rf build && mkdir build",
     "dev": "nodemon server/index.js --exec babel-node --presets es2015 stage-2",
     "build-server": "babel -d ./build ./server -s",
-    "build": "npm run clean && npm run build-server"
+    "build": "npm run clean && npm run build-server",
+    "start": "node build/"
   },
   "author": "",
   "license": "ISC"
