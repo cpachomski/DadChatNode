@@ -1,4 +1,7 @@
-body {
-	background: #333;
-	color: white;
+.page-content {
+	padding-top: 50px;
+}
+
+nav {
+	background: black;
 }
