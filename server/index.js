@@ -1,6 +1,5 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import routes from './routes';
 
 const app = express()
 
@@ -15,12 +14,13 @@ app.use(express.static(`${__dirname}/../public`))
 app.set('view engine', 'pug')
 app.set('views', `${__dirname}/../views`)
 
-//use the routes
+//use and use the routes
+import routes from './routes';
 app.use('/', routes)
 
 //if no route found send them a 404
 app.use((req, res, next) => {
-	var err = new Error('Page Not Found')
+	let err = new Error('Page Not Found')
 	err.status = 404
 	next(err)
 })
@@ -28,7 +28,8 @@ app.use((req, res, next) => {
 //error handler
 app.use((req, res, next) => {
 	res.status(err.status || 500)
-	res.render('error', {
+	return res.render('error', {
+
 		message: err.message,
 		error: {}
 	})
