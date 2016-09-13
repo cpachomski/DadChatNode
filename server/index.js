@@ -1,7 +1,30 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-
+import express from 'express'
+import session from 'express-session'
+import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
+const MongoStore = require('connect-mongo')(session)
 const app = express()
+
+//mongodb connection
+mongoose.connect('mongodb://localhost:27017/dadchat')
+let db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error: '))
+
+//create user sessions
+//store in separate session collection
+app.use(session({
+	secret: 'fsmfl',
+	resave: true,
+	store: new MongoStore({
+		mongooseConnection: db
+	})
+}))
+
+//make user's session id available to views
+app.use((req, res, next) => {
+	app.locals.currentUser = req.session.userId
+	next()
+})
 
 //make incoming requests cool 
 app.use(bodyParser.json())
@@ -14,7 +37,7 @@ app.use(express.static(`${__dirname}/../public`))
 app.set('view engine', 'pug')
 app.set('views', `${__dirname}/../views`)
 
-//use and use the routes
+//use those good routes
 import routes from './routes';
 app.use('/', routes)
 
