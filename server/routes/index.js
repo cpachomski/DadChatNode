@@ -1,18 +1,18 @@
 import express from 'express'
+import loginRoutes from './login'
+import registrationRoutes from './register'
 
 const router = express.Router()
 
-
 router.get('/', (req, res, next) => {
-	return res.render('index', { title: 'index' })
+	res.render('index', { title: 'index' })
 })
 
-router.get('/login', (req, res, next) => {
-	return res.render('login', { title: 'login' })
+router.get('/about', (req, res, next) => {
+	res.render('about', { title: 'about' })
 })
 
-router.get('/register', (req, res, next) => {
-	return res.render('register', { title: 'register' })
-})
+router.use('/login', loginRoutes)
+router.use('/register', registrationRoutes)
 
 export default router;
