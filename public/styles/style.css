@@ -1,6 +1,44 @@
-.top-bar {
-	background: #333;
+header {
+	background: black;
 	margin-bottom: 25px;
+}
+
+.header-container {
+	display: flex;
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 25px 25px;
+	justify-content: space-between;
+	align-items: center;
+}
+
+h1.logo {
+	font-size: 26px;
+}
+
+h1.logo > a,
+h1.logo > a:hover,
+h1.logo > a:active {
+	color: white;
+}
+
+ul.desktop-nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0px;
+
+}
+
+ul.desktop-nav > li {
+	margin: 0px 10px;
+}
+
+ul.desktop-nav > li > a,
+ul.desktop-nav > li > a:hover,
+ul.desktop-nav > li > a:active {
+	color: white;
+	font-size: 18px;
 }
 
 form { 
@@ -11,6 +49,11 @@ form {
 .button {
 	padding: 15px 30px;
 	float: right;
+	background: black;
+}
+
+.button:hover {
+	background: #333;
 }
 
 @media screen and (max-width: 480px) {
