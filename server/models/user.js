@@ -15,7 +15,8 @@ const UserSchema = new mongoose.Schema({
 	email: {
 		type: String,
 		required: true,
-		trim: true
+		trim: true,
+		unique: true
 	},
 	password: {
 		type: String,
@@ -23,14 +24,35 @@ const UserSchema = new mongoose.Schema({
 	},
 	isDad: {
 		type: Boolean,
-		required: true
+		default: true
 	}
 })
 
+UserSchema.statics.authenticate = (email, password, cb) => {
+	User.findOne({ email: email })
+		.exec((error, user) => {
+			if (error) {
+				return cb(error)
+			} else if ( !user ) {
+				let err = new Error('User not found.')
+				err.status = 401
+				return cb(err)
+			}
+
+			bcrypt.compate(password, user.password, (error, result) => {
+				if (result === true) {
+					return cb(null, user)
+				} else {
+					return cb()
+				}
+			})
+		})
+}
+
 //hash the password so it's super safe
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', function(next) {
 	let user = this
-	bycrypt.hash(user.password, 10, (err, hash) => {
+	bcrypt.hash(user.password, 10, (err, hash) => {
 		if (err) {
 			next(err)
 		}
