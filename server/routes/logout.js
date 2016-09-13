@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
-router.get('/logout', (req, res, next) => {
+router.get('/', (req, res, next) => {
 	if (req.session) {
 		req.session.destroy((err) => {
 			if (err) {

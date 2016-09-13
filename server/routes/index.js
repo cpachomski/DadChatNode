@@ -13,6 +13,10 @@ router.get('/about', (req, res, next) => {
 	res.render('about', { title: 'about' })
 })
 
+router.get('/rooms', (req, res, next) => {
+	res.render('rooms', {title: 'rooms' })
+})
+
 //Auth Routes
 router.use('/login', loginRoutes)
 router.use('/register', registrationRoutes)

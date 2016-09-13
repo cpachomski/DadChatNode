@@ -39,7 +39,7 @@ UserSchema.statics.authenticate = (email, password, cb) => {
 				return cb(err)
 			}
 
-			bcrypt.compate(password, user.password, (error, result) => {
+			bcrypt.compare(password, user.password, (error, result) => {
 				if (result === true) {
 					return cb(null, user)
 				} else {

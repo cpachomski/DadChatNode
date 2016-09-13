@@ -4,8 +4,12 @@ header
 			a(href='/') DadChat
 		ul.desktop-nav
 			li
-				a(href="/register") Sign up
-			li
-				a(href="/login") Log in
-			li
 				a(href='/about') About
+			if !currentUser
+				li
+					a(href="/register") Sign up
+				li
+					a(href="/login") Log in
+			else
+				li
+					a(href='/logout') Log Out

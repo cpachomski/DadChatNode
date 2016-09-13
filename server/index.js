@@ -6,6 +6,7 @@ const MongoStore = require('connect-mongo')(session)
 const app = express()
 
 //mongodb connection
+mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost:27017/dadchat')
 let db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error: '))

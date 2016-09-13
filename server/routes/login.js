@@ -13,12 +13,12 @@ router.post('/', (req, res, next) => {
 		User.authenticate(email, password, (err, user) => {
 			if (err || !user) {
 				let err = new Error('Wrong email or password cmon jeez')
-				err.status= 401
+				err.status = 401
 				return next(err)
 			} else {
 				//create user session
 				req.session.userId = user._id
-				return res.resdirect('/rooms')
+				return res.redirect('/rooms')
 			}
 		})
 	} else {
