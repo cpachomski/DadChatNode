@@ -2,23 +2,26 @@ extends layout
 
 block content
 	div.row
-		form.col.s8.offset-s2
+		form.col.s6.offset-s3
 			div.row
 				div.input-field.col.s6
-					input.validate(id='first-name', type='text')
+					input.validate(id='first-name', type='text', name='firstName')
 					label(for='first-name') First Name
 				div.input-field.col.s6
-					input.validate(id='last-name', type='text')
+					input.validate(id='last-name', type='text', name='lastName')
 					label(for='last-name') Last Name
 			div.row
 				div.input-field.col.s12
-					input.validate(id='email', type='email')
+					input.validate(id='email', type='email', name='email')
 					label(for='email') Email
 			div.row
 				div.input-field.col.s12
-					input.validate(id='password', type='password')
+					input.validate(id='password', type='password', name='password')
 					label(for='password') Password
 			div.row
 				div.input-field.col.s12
-					input.validate(id='password-confirmation', type='password')
+					input.validate(id='password-confirmation', type='password', name='passwordConfirmation')
 					label(for='password-confirmation') Password Confirmation
+			div.row
+				div.input-field.col.s12
+					input.btn(type='submit')

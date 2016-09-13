@@ -2,7 +2,7 @@ extends layout
 
 block content
 	div.row
-		form.col.s8.offset-s2
+		form.col.s6.offset-s3
 			div.row
 				div.input-field.col.s12
 					input.validate(id='email', type='email')
@@ -10,3 +10,5 @@ block content
 				div.input-field.col.s12
 					input.validate(id='password', type='password')
 					label(for='password') Password
+				div.input-field.col.s12
+					input.btn(type='submit')
