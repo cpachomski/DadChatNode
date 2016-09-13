@@ -1,27 +1,26 @@
 extends layout
 
 block content
-	div.row
-		form.col.s6.offset-s3
-			div.row
-				div.input-field.col.s6
-					input.validate(id='first-name', type='text', name='firstName')
-					label(for='first-name') First Name
-				div.input-field.col.s6
-					input.validate(id='last-name', type='text', name='lastName')
-					label(for='last-name') Last Name
-			div.row
-				div.input-field.col.s12
-					input.validate(id='email', type='email', name='email')
-					label(for='email') Email
-			div.row
-				div.input-field.col.s12
-					input.validate(id='password', type='password', name='password')
-					label(for='password') Password
-			div.row
-				div.input-field.col.s12
-					input.validate(id='password-confirmation', type='password', name='passwordConfirmation')
-					label(for='password-confirmation') Password Confirmation
-			div.row
-				div.input-field.col.s12
-					input.btn(type='submit')
+	div.container
+		form
+			div.medium-12.columns
+				div.medium-12.columns
+					h2 Register
+				div.medium-6.columns
+					label First Name
+						input.validate(id='first-name', type='text', name='firstName')
+				div.medium-6.columns
+					label Last Name
+						input.validate(id='last-name', type='text', name='lastName')
+
+				div.medium-12.columns
+					label Email
+						input.validate(id='email', type='email', name='email')
+				div.medium-12.columns
+					label Password
+						input.validate(id='password', type='password', name='password')
+				div.medium-12.columns
+					label Password Confirmation
+						input.validate(id='password-confirmation', type='password', name='passwordConfirmation')
+				div.medium-12.columns
+					input.button(type='submit', value='Register')

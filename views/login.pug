@@ -1,14 +1,16 @@
 extends layout
 
 block content
-	div.row
-		form.col.s6.offset-s3
-			div.row
-				div.input-field.col.s12
-					input.validate(id='email', type='email')
-					label(for='email') Email
-				div.input-field.col.s12
-					input.validate(id='password', type='password')
-					label(for='password') Password
-				div.input-field.col.s12
-					input.btn(type='submit')
+	div.container
+		form
+			div.medium-12.columns
+				div.medium-12.columns
+					h2 Log in
+				div.medium-12.columns
+					label Email
+						input.validate(id='email', type='email')
+				div.medium-12.columns
+					label Password
+						input.validate(id='password', type='password')
+				div.medium-6.columns
+					input.button(type='submit', value='Log in')
