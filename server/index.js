@@ -16,6 +16,7 @@ db.on('error', console.error.bind(console, 'connection error: '))
 app.use(session({
 	secret: 'fsmfl',
 	resave: true,
+	saveUninitialized: true,
 	store: new MongoStore({
 		mongooseConnection: db
 	})
