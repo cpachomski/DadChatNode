@@ -25,6 +25,9 @@ const UserSchema = new Schema({
 	isDad: {
 		type: Boolean,
 		default: true
+	},
+	rooms: {
+		type: Array
 	}
 })
 
