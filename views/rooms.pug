@@ -3,5 +3,18 @@ extends layout
 block content
 	div.container
 		div.row
-			div.medium-4.medium-offset-4.columns
+			div.medium-4.columns
+				h3 Create a new room
+				form(method='POST', action='/rooms')
+					div.medium-12.columns
+						label Name
+							input.validate(id='room-name', type='text', name='name')
+					div.medium-12.columns
+						input.button(type='submit', value='Create')
+			div.medium-8.columns
 				h2 Rooms
+				ul
+					each room in rooms
+						li 
+							a(href='/rooms/' + room._id) #{room.name}
+
