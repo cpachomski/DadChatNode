@@ -9,7 +9,8 @@ const RoomSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		required: true
 	},
-	users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+	users: [{ type: Schema.Types.ObjectId }],
+	currentUsers: [{ type: Schema.Types.ObjectId }],
 	messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }]
 })
 
