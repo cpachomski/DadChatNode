@@ -31,6 +31,9 @@ const UserSchema = new Schema({
 	}
 })
 
+UserSchema.index({'$**': 'text'});
+
+
 UserSchema.statics.authenticate = (email, password, cb) => {
 	User.findOne({ email: email })
 		.exec((error, user) => {
