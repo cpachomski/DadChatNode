@@ -1,6 +1,7 @@
 import express from 'express'
 import Room from '../models/room'
 import User from '../models/user'
+import { IO } from '../index'
 import { requiresLoggedIn } from '../middleware'
 
 const router = express.Router()
@@ -15,6 +16,35 @@ router.get('/', requiresLoggedIn, (req, res, next) => {
 		})
 	}).then(() => {
 		res.render('rooms', {title: 'rooms', rooms: rooms})
+	})
+
+})
+
+router.get('/:id', requiresLoggedIn, (req, res, next) => {
+	const roomId = req.params.id
+	const userId = req.session.userId
+
+	const socketUrl = `${req.protocol}://${req.hostname}`
+
+	Room.findOne({ _id: roomId }, (err, room) => {
+		if (err) {
+			next(err)
+		}
+		User.findOne({ _id: userId }, (err, user) => {
+			if (err) {
+				next(err)
+			}
+
+			res.render('room',
+				{ title: 'Chat Room',
+			   		roomId: roomId,
+			   		roomName: room.name,
+			   		socketUrl: socketUrl,
+			   		email: user.email
+				}
+			)
+		})
+
 	})
 
 })

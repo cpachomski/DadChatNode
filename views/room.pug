@@ -1,0 +1,50 @@
+extends layout
+
+block content
+	div.container
+		div.row
+			div.medium-6.medium-offset-1.columns
+				div.chat-window(style='min-height: 300px;')
+					h3 #{roomName} 
+						small(style='font-size:14px') [#{roomId}]
+					ul#messages
+
+				div.chat-input
+					form#message
+						input.validate(id='message', type='text', name='message')
+						input.button(type='submit', value='Send')
+
+			div.medium-3.columns(style='min-height:300px; border: 1px solid black;')
+				div.users-list 
+
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js')
+	script(src='/socket.io/socket.io.js')
+	script.
+		(function(){
+			$(document).ready(function(){
+				var socket = io.connect('#{socketUrl}'+ ':3000');
+
+				//socket channel name is roomId
+				socket.emit('join', '#{roomId}')
+
+				$('#message').submit(function(e){
+					e.preventDefault();
+					var message = e.target.message.value;
+					socket.emit('message', message, function() {
+						addMessage(message);
+					});
+				});
+
+				socket.on('broadcast', (msg) => {
+					addMessage(msg);
+				});
+
+				socket.on('error', (err) => {
+					addMessage('Error: ' + err);
+				});
+
+				function addMessage(msg) {
+					$('<li>' + msg + '</li>').appendTo('#messages')
+				}
+			});
+		})($);
