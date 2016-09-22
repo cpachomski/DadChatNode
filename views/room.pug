@@ -8,7 +8,8 @@ block content
 					h3 #{roomName} 
 						small(style='font-size:14px') [#{roomId}]
 					ul#messages
-
+						each message in messages
+							li(style='list-style:none') #{message.userId}: #{message.message} 
 				div.chat-input
 					form#message
 						input.validate(id='message', type='text', name='message')
@@ -23,28 +24,35 @@ block content
 		(function(){
 			$(document).ready(function(){
 				var socket = io.connect('#{socketUrl}'+ ':3000');
+				var roomId = '#{roomId}'
+				var userId = '#{currentUser}'
 
 				//socket channel name is roomId
-				socket.emit('join', '#{roomId}')
+				socket.emit('join', roomId)
 
 				$('#message').submit(function(e){
 					e.preventDefault();
-					var message = e.target.message.value;
-					socket.emit('message', message, function() {
-						addMessage(message);
+					var payload = {
+						message: e.target.message.value,
+						userId: userId,
+						sentAt: new Date(),
+						roomId: roomId
+					}
+					socket.emit('message', payload, function() {
+						addMessage(payload);
 					});
 				});
 
-				socket.on('broadcast', (msg) => {
-					addMessage(msg);
+				socket.on('broadcast', function(payload) {
+					addMessage(payload);
 				});
 
-				socket.on('error', (err) => {
+				socket.on('error', function(err) {
 					addMessage('Error: ' + err);
 				});
 
-				function addMessage(msg) {
-					$('<li>' + msg + '</li>').appendTo('#messages')
+				function addMessage(payload) {
+					$('<li>' + payload.userId + ': ' + payload.message + '</li>').appendTo('#messages')
 				}
 			});
 		})($);
