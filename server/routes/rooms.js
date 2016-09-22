@@ -23,13 +23,13 @@ router.get('/', requiresLoggedIn, (req, res, next) => {
 router.get('/:id', requiresLoggedIn, (req, res, next) => {
 	const roomId = req.params.id
 	const userId = req.session.userId
-
 	const socketUrl = `${req.protocol}://${req.hostname}`
 
 	Room.findOne({ _id: roomId }, (err, room) => {
-		if (err) {
-			next(err)
-		}
+		if (err) { next(err) }
+
+		const messages = room.messages
+
 		User.findOne({ _id: userId }, (err, user) => {
 			if (err) {
 				next(err)
@@ -40,13 +40,12 @@ router.get('/:id', requiresLoggedIn, (req, res, next) => {
 			   		roomId: roomId,
 			   		roomName: room.name,
 			   		socketUrl: socketUrl,
-			   		email: user.email
+			   		email: user.email,
+			   		messages: messages
 				}
 			)
 		})
-
 	})
-
 })
 
 router.post('/', (req, res, next) => {
@@ -58,9 +57,7 @@ router.post('/', (req, res, next) => {
 			User.findOne({ _id: userId} , (err, user) => {
 				user.rooms.push({_id: room._id, name: room.name })
 				user.save((err) => {
-					if (err) {
-						next(err)
-					}
+					if (err) { next(err) }
 					res.redirect(req.get('Referer'))
 				})
 
