@@ -1,7 +1,10 @@
 import express from 'express'
+import io from 'socket.io'
 import session from 'express-session'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
+import Sockets from './sockets'
+
 const MongoStore = require('connect-mongo')(session)
 const app = express()
 
@@ -60,6 +63,9 @@ app.use((req, res, next) => {
 	})
 })
 
-app.listen(process.env.PORT || 3000, () => {
+const server = app.listen(process.env.PORT || 3000, () => {
 	console.log('Serving up something good on port 3000...')
 })
+
+//setup websockets
+Sockets(io.listen(server))
