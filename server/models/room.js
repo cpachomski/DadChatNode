@@ -11,7 +11,7 @@ const RoomSchema = new Schema({
 	},
 	users: [{ type: Schema.Types.ObjectId }],
 	currentUsers: [{ type: Schema.Types.ObjectId }],
-	messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }]
+	messages: Array
 })
 
 const Room = mongoose.model('Room', RoomSchema)
