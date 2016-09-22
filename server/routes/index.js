@@ -3,6 +3,7 @@ import loginRoutes from './login'
 import logoutRoute from './logout'
 import registrationRoutes from './register'
 import roomRoutes from './rooms'
+import searchRoutes from './search'
 
 const router = express.Router()
 
@@ -21,5 +22,6 @@ router.use('/logout', logoutRoute)
 
 //Logic Routes
 router.use('/rooms', roomRoutes)
+router.use('/search', searchRoutes)
 
-export default router;
+export default router
