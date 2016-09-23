@@ -43,8 +43,12 @@ function createPersonalSocket(socket) {
 function handleSendInvites(socket, io) {
 	socket.on('send-invitation', (payload, cb) => {
 		//join personal socket of person being invited
-		console.log(payload.invitee)
-		socket.broadcast.to(payload.invitee).emit('invitation', {message: 'hi'})
+		const { invitee, sender, roomId } = payload
+		let invitationPayload =  {
+			sender: sender,
+			roomId: roomId
+		}
+		socket.broadcast.to(payload.invitee).emit('invitation', invitationPayload)
 	})
 }
 

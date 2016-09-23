@@ -107,9 +107,7 @@ block content
 						invitee: userId,
 						roomId:  roomId
 					}
-					console.log("Inviting userId: " + userId);
 					socket.emit('send-invitation', payload)	
-
 				}
 			});
 		})($);

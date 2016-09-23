@@ -27,6 +27,20 @@ head
 
 					socket.emit('join-personal-channel', '#{currentUser}');
 					socket.on('invitation', function(payload) {
-						console.log(payload)
+						$("<a>")
+							.attr('href', '/rooms/' + payload.roomId)
+							.text('userId: ' + payload.sender + ' has invited you to chat!')
+							.css({
+								'position': 'fixed',
+								'width': '100%',
+								'bottom': '0px',
+								'left': '0px',
+								'display': 'block',
+								'line-height': '40px',
+								'background': 'black',
+								'color': 'white',
+								'z-index': '500'
+							})
+							.appendTo('body')
 					})
 				})($)
