@@ -23,10 +23,6 @@ block content
 						input.button(type='submit', value='Search')
 				div#users-list
 
-
-
-	script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js')
-	script(src='/socket.io/socket.io.js')
 	script.
 
 		function inviteUser(userId) {
@@ -55,13 +51,30 @@ block content
 					})
 				});
 
+				function addUser(payload) {
+					var payload = JSON.parse(payload);
+					// check to see if any results
+					if (payload.length < 1) { return }
+
+					var userId = payload[0]._id;
+					var email = payload[0].email;
+					var firstName = payload[0].firstName;
+					var lastName = payload[0].lastName;
+
+					//create new link to add user
+					$('<a href="#"></a>')
+					.click(function() { console.log(userId) })
+					.text('Invite: ' + firstName + ' ' + lastName + ' ' + email)
+					.appendTo('#users-list');
+				}
+
 				//Chat
 				var socket = io.connect('#{socketUrl}'+ ':3000');
 				var roomId = '#{roomId}'
 				var userId = '#{currentUser}'
 
 				//socket channel name is roomId
-				socket.emit('join', roomId)
+				socket.emit('join-chat', roomId)
 
 				$('#message').submit(function(e){
 					e.preventDefault();
@@ -90,22 +103,6 @@ block content
 					$('#messages').scrollTop($('#messages')[0].scrollHeight);
 				}
 
-				function addUser(payload) {
-					var payload = JSON.parse(payload);
-					// check to see if any results
-					if (payload.length < 1) { return }
-
-					var userId = payload[0]._id;
-					var email = payload[0].email;
-					var firstName = payload[0].firstName;
-					var lastName = payload[0].lastName;
-
-					//create new link to add user
-					$('<a href="#"></a>')
-					.click(function() { console.log(userId) })
-					.text('Invite: ' + firstName + ' ' + lastName + ' ' + email)
-					.appendTo('#users-list');
-				}
 
 			});
 		})($);
