@@ -58,7 +58,7 @@ router.post('/', (req, res, next) => {
 				(err) => {
 					if (err) { next(err) }
 					res.redirect(req.get('Referer'))
-				}
+				}	
 			)
 		})
 	}
