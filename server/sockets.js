@@ -23,12 +23,20 @@ function handleMessage(socket, channel) {
 			sentAt: sentAt
 		}
 
-		Room.findOne({ _id: roomId }, (err, room) => {
-			room.messages.push(msgData)
-			room.save(() => {
-				socket.broadcast.to(channel).emit('broadcast', payload)
-				cb()
-			})
+		Room.findByIdAndUpdate(roomId, { $push: { 'messages': msgData }}, () => {
+			socket.broadcast.to(channel).emit('broadcast', payload)
+			cb()
 		})
 	})
 }
+
+// function createPersonalSocket(socket) {
+// 	socket.on('open-invitations', (channel, cb) => {
+// 		socket.join(channel)
+// 		handleChatInvite(socket, channel)
+// 	})
+// }
+
+// function handleChatInvite(socket, channel) {
+
+// }
