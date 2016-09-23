@@ -18,14 +18,20 @@ block content
 			div.medium-3.columns(style='min-height:300px; border: 1px solid black;')
 				div.user-search
 					form#user-search
-						label Search Users
+						label Invite
 							input.validate(type='text', name='query')
 						input.button(type='submit', value='Search')
-				div.users-list 
+				div#users-list
+
+
 
 	script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js')
 	script(src='/socket.io/socket.io.js')
 	script.
+
+		function inviteUser(userId) {
+			console.log(userId)
+		}
 		(function(){
 			$(document).ready(function(){
 				$('#messages').scrollTop($('#messages')[0].scrollHeight);
@@ -40,8 +46,11 @@ block content
 							query: query
 						},
 						dataType: 'text	',
-						success: function (msg) {
-							console.log(msg)
+						beforeSend: function() {
+						 	$('#users-list').empty();
+						},
+						success: function (payload) {
+							addUser(payload);
 						}
 					})
 				});
@@ -80,5 +89,23 @@ block content
 					$('<li>' + payload.userId + ': ' + payload.message + '</li>').appendTo('#messages')
 					$('#messages').scrollTop($('#messages')[0].scrollHeight);
 				}
+
+				function addUser(payload) {
+					var payload = JSON.parse(payload);
+					// check to see if any results
+					if (payload.length < 1) { return }
+
+					var userId = payload[0]._id;
+					var email = payload[0].email;
+					var firstName = payload[0].firstName;
+					var lastName = payload[0].lastName;
+
+					//create new link to add user
+					$('<a href="#"></a>')
+					.click(function() { console.log(userId) })
+					.text('Invite: ' + firstName + ' ' + lastName + ' ' + email)
+					.appendTo('#users-list');
+				}
+
 			});
 		})($);
