@@ -54,17 +54,14 @@ router.post('/', (req, res, next) => {
 
 	if (name && userId) {
 		Room.create({ name: name, admin: userId }, (err, room, done) => {
-			User.findOne({ _id: userId} , (err, user) => {
-				user.rooms.push({_id: room._id, name: room.name })
-				user.save((err) => {
+			User.findByIdAndUpdate( userId, { $push: { 'rooms': { _id: room._id, name: room.name }}},
+				(err) => {
 					if (err) { next(err) }
 					res.redirect(req.get('Referer'))
-				})
-
-			})
+				}
+			)
 		})
 	}
-
 })
 
 export default router
