@@ -4,11 +4,13 @@ import Room from './models/room'
 export default (io) => {
 	io.sockets.on('connection', (socket) => {
 		handleJoin(socket)
+		handleSendInvites(socket, io)
+		createPersonalSocket(socket)
 	})
 }
 
 function handleJoin(socket) {
-	socket.on('join', (channel, cb) => {
+	socket.on('join-chat', (channel, cb) => {
 		socket.join(channel)
 		handleMessage(socket, channel)
 	})
@@ -30,13 +32,23 @@ function handleMessage(socket, channel) {
 	})
 }
 
-// function createPersonalSocket(socket) {
-// 	socket.on('open-invitations', (channel, cb) => {
-// 		socket.join(channel)
-// 		handleChatInvite(socket, channel)
-// 	})
-// }
+function createPersonalSocket(socket) {
+	socket.on('join-personal-channel', (channel, cb) => {
+		socket.join(channel)
+		console.log(`user: ${channel} just logged in`)
+	})
+}
 
-// function handleChatInvite(socket, channel) {
 
-// }
+function handleSendInvites(socket, io) {
+	socket.on('send-invitation', (payload, cb) => {
+		//join personal socket of person being invited
+		console.log(payload.invitee)
+		socket.broadcast.to(payload.invitee).emit('invitation', {message: 'hi'})
+	})
+}
+
+//when you log in your personal channel will be created (it's name is your userId)
+//when a user invites another user they will connect to the users channel and then be send them the invite
+//the 
+

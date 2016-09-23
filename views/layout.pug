@@ -17,3 +17,16 @@ head
 
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js')
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundation.min.js')
+
+		//setup user specific notification channel
+		if currentUser
+			script.
+				(function(){
+					var socket = io.connect('http://localhost:3000');
+					var userId = '#{currentUser}';
+
+					socket.emit('join-personal-channel', '#{currentUser}');
+					socket.on('invitation', function(payload) {
+						console.log(payload)
+					})
+				})($)

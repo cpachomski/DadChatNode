@@ -24,49 +24,9 @@ block content
 				div#users-list
 
 	script.
-
-		function inviteUser(userId) {
-			console.log(userId)
-		}
 		(function(){
 			$(document).ready(function(){
 				$('#messages').scrollTop($('#messages')[0].scrollHeight);
-				//Search
-				$('#user-search').submit(function(e) {
-					e.preventDefault();
-					var query = e.target.query.value
-					$.ajax({
-						type: 'POST',
-						url: '/search/users',
-						data: {
-							query: query
-						},
-						dataType: 'text	',
-						beforeSend: function() {
-						 	$('#users-list').empty();
-						},
-						success: function (payload) {
-							addUser(payload);
-						}
-					})
-				});
-
-				function addUser(payload) {
-					var payload = JSON.parse(payload);
-					// check to see if any results
-					if (payload.length < 1) { return }
-
-					var userId = payload[0]._id;
-					var email = payload[0].email;
-					var firstName = payload[0].firstName;
-					var lastName = payload[0].lastName;
-
-					//create new link to add user
-					$('<a href="#"></a>')
-					.click(function() { console.log(userId) })
-					.text('Invite: ' + firstName + ' ' + lastName + ' ' + email)
-					.appendTo('#users-list');
-				}
 
 				//Chat
 				var socket = io.connect('#{socketUrl}'+ ':3000');
@@ -103,6 +63,53 @@ block content
 					$('#messages').scrollTop($('#messages')[0].scrollHeight);
 				}
 
+				//Search
+				$('#user-search').submit(function(e) {
+					e.preventDefault();
+					var query = e.target.query.value
+					$.ajax({
+						type: 'POST',
+						url: '/search/users',
+						data: {
+							query: query
+						},
+						dataType: 'text	',
+						beforeSend: function() {
+						 	$('#users-list').empty();
+						},
+						success: function (payload) {
+							addUser(payload);
+						}
+					})
+				});
 
+				function addUser(payload) {
+					var payload = JSON.parse(payload);
+					// check to see if any results
+					if (payload.length < 1) { return }
+
+					var userId = payload[0]._id;
+					var email = payload[0].email;
+					var firstName = payload[0].firstName;
+					var lastName = payload[0].lastName;
+
+					//create new link to add user
+					$('<a href="#"></a>')
+					.click(function() { inviteUser(userId) })
+					.text('Invite: ' + firstName + ' ' + lastName + ' ' + email)
+					.appendTo('#users-list');
+				}
+
+				//Invite user
+				function inviteUser(userId) {
+					var payload = {
+						sender: '#{currentUser}',
+						invitee: userId,
+						roomId:  roomId
+					}
+					console.log("Inviting userId: " + userId);
+					socket.emit('send-invitation', payload)	
+
+				}
 			});
 		})($);
