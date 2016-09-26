@@ -5,7 +5,7 @@ block content
 		div.row
 			div.medium-6.medium-offset-1.columns
 				div.chat-window
-					h3 #{roomName} 
+					h3#room-name #{roomName} 
 						small(style='font-size:14px') [#{roomId}]
 					ul#messages(style='height: 300px; overflow: scroll;')
 						each message in messages
@@ -105,7 +105,8 @@ block content
 					var payload = {
 						sender: '#{currentUser}',
 						invitee: userId,
-						roomId:  roomId
+						roomId:  roomId,
+						roomName: $('#room-name').clone().children().remove().end().text()
 					}
 					socket.emit('send-invitation', payload)	
 				}
