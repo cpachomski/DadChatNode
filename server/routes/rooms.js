@@ -53,7 +53,7 @@ router.post('/', (req, res, next) => {
 	const userId = req.session.userId
 
 	if (name && userId) {
-		Room.create({ name: name, admin: userId }, (err, room, done) => {
+		Room.create({ name: name, admin: userId }, (err, room) => {
 			User.findByIdAndUpdate( userId, { $push: { 'rooms': { _id: room._id, name: room.name }}},
 				(err) => {
 					if (err) { next(err) }
