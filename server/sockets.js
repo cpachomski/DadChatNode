@@ -1,4 +1,5 @@
 import Room from './models/room'
+import User from './models/user'
 
 
 export default (io) => {
@@ -35,7 +36,6 @@ function handleMessage(socket, channel) {
 function createPersonalSocket(socket) {
 	socket.on('join-personal-channel', (channel, cb) => {
 		socket.join(channel)
-		console.log(`user: ${channel} just logged in`)
 	})
 }
 
@@ -43,16 +43,17 @@ function createPersonalSocket(socket) {
 function handleSendInvites(socket, io) {
 	socket.on('send-invitation', (payload, cb) => {
 		//join personal socket of person being invited
-		const { invitee, sender, roomId } = payload
-		let invitationPayload =  {
-			sender: sender,
-			roomId: roomId
-		}
-		socket.broadcast.to(payload.invitee).emit('invitation', invitationPayload)
+		const { invitee, sender, roomId, roomName } = payload
+
+		//add push roomId into user's rooms array
+		User.findByIdAndUpdate( invitee, { $push: {'rooms': { _id: roomId, name: roomName  } }},
+			() => {
+				let invitationPayload =  {
+					sender: sender,
+					roomId: roomId,
+					roomName: roomName
+				}
+				socket.broadcast.to(payload.invitee).emit('invitation', invitationPayload)
+			})
 	})
 }
-
-//when you log in your personal channel will be created (it's name is your userId)
-//when a user invites another user they will connect to the users channel and then be send them the invite
-//the 
-
