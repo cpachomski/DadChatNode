@@ -1,15 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react'
 import { render } from 'react-dom'
+import ChatRoom from './components/ChatRoom'
 
-class Test extends Component {
-	render() {
-		console.log('yo')
-		const yo = 'yo'
-
-		return(
-			<div>yo</div>
-		)
-	}
-}
-
-render(<Test />, document.getElementById('dashboard'))
+render(<ChatRoom />, document.getElementById('dashboard'))
