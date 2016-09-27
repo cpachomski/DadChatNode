@@ -1,5 +1,3 @@
-// based on NODE_ENV have global api base be localhost:3000
-//server files from localhost:8080 and change pug to pull from live reload server
 var webpack = require('webpack');
 
 module.exports  = {
@@ -13,5 +11,21 @@ module.exports  = {
 		filename: 'bundle.js',
 		publicPath: '/static/'
 	},
-	plugins:[new webpack.HotModuleReplacementPlugin()]
+	plugins:[new webpack.HotModuleReplacementPlugin()],
+	module: {
+		loaders: [
+	      {
+	        test: /\.js$/,
+	        loader: 'babel',
+	        exclude: /node_modules/
+	      },
+	      {
+	        test: /\.scss$/,
+	        loaders: ['style', 'css', 'sass']
+	      }
+	    ],
+	},
+    resolve: {
+    	extensions: ['', '.js', '.jsx', 'scss']
+  	}
 }
