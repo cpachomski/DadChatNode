@@ -1,5 +1,6 @@
 import Room from './models/room'
 import User from './models/user'
+import _ from 'lodash'
 
 
 export default (io) => {
@@ -42,18 +43,18 @@ function createPersonalSocket(socket) {
 
 function handleSendInvites(socket, io) {
 	socket.on('send-invitation', (payload, cb) => {
+		
 		//join personal socket of person being invited
 		const { invitee, sender, roomId, roomName } = payload
 
-		//add push roomId into user's rooms array
-		User.findByIdAndUpdate( invitee, { $push: {'rooms': { _id: roomId, name: roomName  } }},
-			() => {
+		User.update({ _id: invitee }, {$addToSet: { 'rooms': {_id: roomId, name: roomName }}},
+			(err, user) => {
 				let invitationPayload =  {
-					sender: sender,
-					roomId: roomId,
-					roomName: roomName
-				}
-				socket.broadcast.to(payload.invitee).emit('invitation', invitationPayload)
-			})
+		 			sender: sender,
+		 			roomId: roomId,
+		 			roomName: roomName
+	 			}
+	 			socket.broadcast.to(payload.invitee).emit('invitation', invitationPayload)
+		})
 	})
 }
