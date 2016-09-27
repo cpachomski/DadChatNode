@@ -17,10 +17,9 @@ block content
 
 			div.medium-3.columns(style='min-height:300px; border: 1px solid black;')
 				div.user-search
-					form#user-search
-						label Invite
-							input.validate(type='text', name='query')
-						input.button(type='submit', value='Search')
+					form
+						label Find Users and Invite
+							input#user-search.validate(type='text', name='query')
 				div#users-list
 
 	script.
@@ -64,9 +63,9 @@ block content
 				}
 
 				//Search
-				$('#user-search').submit(function(e) {
+				$('#user-search').keyup(function(e) {
 					e.preventDefault();
-					var query = e.target.query.value
+					var query = e.target.value
 					$.ajax({
 						type: 'POST',
 						url: '/search/users',
@@ -96,7 +95,7 @@ block content
 					//create new link to add user
 					$('<a href="#"></a>')
 					.click(function() { inviteUser(userId) })
-					.text('Invite: ' + firstName + ' ' + lastName + ' ' + email)
+					.text('Invite: ' + firstName + ' ' + lastName + '  [' + email + ']')
 					.appendTo('#users-list');
 				}
 
