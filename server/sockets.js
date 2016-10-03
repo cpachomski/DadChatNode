@@ -46,15 +46,17 @@ function handleSendInvites(socket, io) {
 		
 		//join personal socket of person being invited
 		const { invitee, sender, roomId, roomName } = payload
-
-		User.update({ _id: invitee }, {$addToSet: { 'rooms': {_id: roomId, name: roomName }}},
+		console.log(invitee);
+		User.update({ _id: invitee.userId }, {$addToSet: { 'rooms': {_id: roomId, name: roomName }}},
 			(err, user) => {
 				let invitationPayload =  {
 		 			sender: sender,
 		 			roomId: roomId,
 		 			roomName: roomName
 	 			}
-	 			socket.broadcast.to(payload.invitee).emit('invitation', invitationPayload)
+
+	 			socket.broadcast.to(payload.invitee.userId).emit('invitation', invitationPayload)
+
 		})
 	})
 }

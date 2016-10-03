@@ -1,13 +1,14 @@
 extends layout
 
 block content
+	div#dashboard
 	div.container
 		div.row
 			div.medium-6.medium-offset-1.columns
 				div.chat-window
 					h3#room-name #{roomName} 
 						small(style='font-size:14px') [#{roomId}]
-					ul#messages(style='height: 300px; overflow: scroll;')
+					ul#messages(style='height: 300px; overflow-y: scroll;')
 						each message in messages
 							li(style='list-style:none') #{message.userId}: #{message.message} 
 				div.chat-input
@@ -21,6 +22,11 @@ block content
 						label Find Users and Invite
 							input#user-search.validate(type='text', name='query')
 				div#users-list
+
+	script.
+		var socketUrl = '#{socketUrl}';
+		var roomId = '#{roomId}';
+		var userId = '#{currentUser}';
 
 	script(src='http://localhost:8080/static/bundle.js')
 	script.
@@ -88,23 +94,26 @@ block content
 					// check to see if any results
 					if (payload.length < 1) { return }
 
-					var userId = payload[0]._id;
-					var email = payload[0].email;
-					var firstName = payload[0].firstName;
-					var lastName = payload[0].lastName;
+
+					var inviteeInfo = {
+						userId: payload[0]._id,
+						email: payload[0].email,
+						firstName: payload[0].firstName,
+						lastName: payload[0].lastName
+					}
 
 					//create new link to add user
 					$('<a href="#"></a>')
-					.click(function() { inviteUser(userId) })
-					.text('Invite: ' + firstName + ' ' + lastName + '  [' + email + ']')
+					.click(function() { inviteUser(inviteeInfo) })
+					.text('Invite: ' + inviteeInfo.firstName + ' ' + inviteeInfo.lastName + '  [' + inviteeInfo.email + ']')
 					.appendTo('#users-list');
 				}
 
 				//Invite user
-				function inviteUser(userId) {
+				function inviteUser(inviteeInfo) {
 					var payload = {
 						sender: '#{currentUser}',
-						invitee: userId,
+						invitee: inviteeInfo,
 						roomId:  roomId,
 						roomName: $('#room-name').clone().children().remove().end().text()
 					}
