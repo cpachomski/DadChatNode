@@ -49,11 +49,12 @@ router.get('/:id', requiresLoggedIn, (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-	const { name } = req.body
+	const { name, email, firstName, lastName } = req.body
 	const userId = req.session.userId
 
 	if (name && userId) {
 		Room.create({ name: name, admin: userId }, (err, room) => {
+
 			User.findByIdAndUpdate( userId, { $push: { 'rooms': { _id: room._id, name: room.name }}},
 				(err) => {
 					if (err) { next(err) }
