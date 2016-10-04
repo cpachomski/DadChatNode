@@ -19,7 +19,6 @@ export default class UserList extends Component {
 
 	fetchUsers(roomId) {
 		$.getJSON(`/rooms/${roomId}/users`, (users) => {
-			console.log(users)
 			this.setState({
 				users: users
 			})
