@@ -4,6 +4,7 @@ import logoutRoute from './logout'
 import registrationRoutes from './register'
 import roomRoutes from './rooms'
 import searchRoutes from './search'
+import usersRoutes from './users'
 import messageRoutes from './messages'
 
 const router = express.Router()
@@ -24,6 +25,7 @@ router.use('/logout', logoutRoute)
 //Logic Routes
 router.use('/rooms', roomRoutes)
 router.use('/rooms', messageRoutes)
+router.use('/rooms', usersRoutes)
 router.use('/search', searchRoutes)
 
 export default router

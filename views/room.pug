@@ -2,21 +2,11 @@ extends layout
 
 block content
 	div#dashboard
-	div.container(style='display:none')
+	div.container
 		div.row
-			div.medium-6.medium-offset-1.columns
-				div.chat-window
-					h3#room-name #{roomName} 
-						small(style='font-size:14px') [#{roomId}]
-					ul#messages(style='height: 300px; overflow-y: scroll;')
-						each message in messages
-							li(style='list-style:none') #{message.userId}: #{message.message} 
-				div.chat-input
-					form#message
-						input.validate(id='message', type='text', name='message')
-						input.button(type='submit', value='Send')
+			
 
-			div.medium-3.columns(style='min-height:300px; border: 1px solid black;')
+			div.medium-3.medium-offset-9.columns(style='min-height:300px; border: 1px solid black;')
 				div.user-search
 					form
 						label Find Users and Invite
@@ -27,48 +17,22 @@ block content
 		var socketUrl = '#{socketUrl}';
 		var roomId = '#{roomId}';
 		var userId = '#{currentUser}';
+		var firstName = '#{firstName}';
+		var lastName = '#{lastName}';
+		var email = '#{email}'
 
 
 	script(src='http://localhost:8080/static/bundle.js')
 	script.
 		(function(){
 			$(document).ready(function(){
-				$('#messages').scrollTop($('#messages')[0].scrollHeight);
 
 				//Chat
 				var socket = io.connect('#{socketUrl}'+ ':3000');
 				var roomId = '#{roomId}'
 				var userId = '#{currentUser}'
 
-				//socket channel name is roomId
-				socket.emit('join-chat', roomId)
 
-				$('#message').submit(function(e){
-					e.preventDefault();
-					var payload = {
-						message: e.target.message.value,
-						userId: userId,
-						sentAt: new Date(),
-						roomId: roomId
-					}
-					socket.emit('message', payload, function() {
-						addMessage(payload);
-					});
-					e.target.message.value = '';
-				});
-
-				socket.on('broadcast', function(payload) {
-					addMessage(payload);
-				});
-
-				socket.on('error', function(err) {
-					addMessage('Error: ' + err);
-				});
-
-				function addMessage(payload) {
-					$('<li>' + payload.userId + ': ' + payload.message + '</li>').appendTo('#messages')
-					$('#messages').scrollTop($('#messages')[0].scrollHeight);
-				}
 
 				//Search
 				$('#user-search').keyup(function(e) {
@@ -112,6 +76,7 @@ block content
 
 				//Invite user
 				function inviteUser(inviteeInfo) {
+					console.log(inviteeInfo)
 					var payload = {
 						sender: '#{currentUser}',
 						invitee: inviteeInfo,

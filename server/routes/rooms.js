@@ -25,6 +25,7 @@ router.get('/:id', requiresLoggedIn, (req, res, next) => {
 	const userId = req.session.userId
 	const socketUrl = `${req.protocol}://${req.hostname}`
 
+
 	Room.findOne({ _id: roomId }, (err, room) => {
 		if (err) { next(err) }
 
@@ -35,12 +36,17 @@ router.get('/:id', requiresLoggedIn, (req, res, next) => {
 				next(err)
 			}
 
+
+			Room.update({ _id: roomId }, {$addToSet: {'users': {_id: user._id, email: user.email, firstName: user.firstName, lastName: user.lastName }}})
+
 			res.render('room',
 				{ title: 'Chat Room',
 			   		roomId: roomId,
 			   		roomName: room.name,
 			   		socketUrl: socketUrl,
 			   		email: user.email,
+			   		firstName: user.firstName,
+			   		lastName: user.lastName,
 			   		messages: messages
 				}
 			)
@@ -51,7 +57,7 @@ router.get('/:id', requiresLoggedIn, (req, res, next) => {
 router.post('/', (req, res, next) => {
 	const { name, email, firstName, lastName } = req.body
 	const userId = req.session.userId
-
+	
 	if (name && userId) {
 		Room.create({ name: name, admin: userId }, (err, room) => {
 

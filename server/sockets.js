@@ -56,7 +56,7 @@ function handleSendInvites(socket, io) {
 	 			}
 
 	 			//add invitee to the room's list of users
-	 			Room.update({ _id: roomId }, {$addToSet: {'users': {_id: invitee.userId, email: invitee.email, firstName: invitee.firstname, lastName: invitee.lastName }}}, 
+	 			Room.update({ _id: roomId }, {$addToSet: {'users': {_id: invitee.userId, email: invitee.email, firstName: invitee.firstName, lastName: invitee.lastName }}}, 
 	 				(err, room) => {
 	 					socket.broadcast.to(invitee.userId).emit('invitation', invitationPayload)
 	 				})

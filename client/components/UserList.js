@@ -1,14 +1,32 @@
 import React, { Component } from 'react';
+import uuid from 'node-uuid'
+import UserCard from './UserCard'
 
 export default class UserList extends Component {
 
-	componentWillMount() {
-		//1. get current users for this room
+	constructor() {
+		super()
+
+		this.state = {
+			users: []
+		}
+	}
+
+	componentDidMount() {
+		const { roomId } = this.props
+		this.fetchUsers(roomId)
+	}
+
+	fetchUsers(roomId) {
+		$.getJSON(`/rooms/${roomId}/users`, (users) => {
+			console.log(users)
+			this.setState({
+				users: users
+			})
+		})
 	}
 
 	render() {
-		console.log("users list");
-
 		return (
 			<div className='medium-3 columns'>
 				<div className='user-search'>
@@ -23,6 +41,14 @@ export default class UserList extends Component {
 					</form>
 				</div>
 				<div id='users-list'>
+				{
+					this.state.users.map((user) => {
+						let userKey = uuid.v4()
+						return (
+							<UserCard key={ userKey } user={ user } />
+						)
+					})
+				}
 				</div>
 			</div>
 		)
