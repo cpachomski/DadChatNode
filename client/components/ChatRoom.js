@@ -5,11 +5,17 @@ export default class ChatRoom extends Component {
 
 	constructor(props) {
 		super(props)
+
 		this.state = {
 			socket: io.connect(`${socketUrl}:3000`),
 			roomId: roomId,
-			userId: userId,
-			messages: []
+			messages: [],
+			user: {	
+				userId: userId,
+				email: email,
+				firstName: firstName,
+				lastName: lastName
+			}
 		}
 	}
 
@@ -31,7 +37,7 @@ export default class ChatRoom extends Component {
 				<div className='row'>
 					<ChatWindow socket={ this.state.socket }
 								roomId={ this.state.roomId }
-								userId={ this.state.userId }
+								user={ this.state.user }
 								messages={ this.state.messages } />
 				</div>
 			</div>

@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import uuid from 'node-uuid'
 import Message from './Message'
+import MessageInput from './MessageInput'
 
 export default class ChatWindow extends Component {
 
 	componentDidMount() {
-		console.log($)
+
 		$('#messages').scrollTop($('#messages')[0].scrollHeight);
 	}
 
 	render() {
-		const { messages } = this.props
+		const { messages, socket } = this.props
 
 		return (
 			<div id='chat-window' className='medium-6 medium-offset-1 columns'>
@@ -23,6 +24,7 @@ export default class ChatWindow extends Component {
 						)
 					})}
 				</div>
+				<MessageInput socket={ socket } />
 			</div>
 		)
 	}
