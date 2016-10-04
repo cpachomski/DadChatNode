@@ -2,7 +2,7 @@ extends layout
 
 block content
 	div#dashboard
-	div.container
+	div.container(style='display:none')
 		div.row
 			div.medium-6.medium-offset-1.columns
 				div.chat-window
@@ -27,7 +27,7 @@ block content
 		var socketUrl = '#{socketUrl}';
 		var roomId = '#{roomId}';
 		var userId = '#{currentUser}';
-		var messages = #{JSON.stringify(messages)};
+
 
 	script(src='http://localhost:8080/static/bundle.js')
 	script.
