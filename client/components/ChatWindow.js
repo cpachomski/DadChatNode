@@ -5,18 +5,65 @@ import MessageInput from './MessageInput'
 
 export default class ChatWindow extends Component {
 
-	componentDidMount() {
+	constructor(props) {
+		super(props)
+		this.state = {
+			messages: []
+		}
 
-		$('#messages').scrollTop($('#messages')[0].scrollHeight);
+	}
+
+	scrollForNewMessage() {
+		$('#messages').scrollTop($('#messages')[0].scrollHeight)
+	}
+
+	componentDidMount() {
+		const { socket, roomId } = this.props
+
+		//pull old messages and scoll to top
+		this.fetchMessages(roomId)		
+		
+		//add received messages to state
+		socket.on('broadcast', (payload) => {
+			this.addMessage(payload)
+		})
+	}
+
+	fetchMessages(roomId) {
+		$.getJSON(`/rooms/${roomId}/messages`, (messages) => {
+			this.setState({
+				messages: messages
+			})
+		})
+
+		this.scrollForNewMessage();
+	}
+
+	emitMessage(payload) {
+		const { socket } = this.props
+
+		socket.emit('message', payload, () => {
+			this.addMessage(payload)
+		})
+	}
+
+	addMessage(payload) {
+		let updatedMessages = this.state.messages.concat([payload])
+
+		this.setState({
+			messages: updatedMessages
+		})
+
+		this.scrollForNewMessage()
 	}
 
 	render() {
-		const { messages, socket } = this.props
+		const { socket, roomId, user } = this.props
 
 		return (
 			<div id='chat-window' className='medium-6 medium-offset-1 columns'>
 				<div id='messages'>
-					{ messages.map((message) => {
+					{ this.state.messages.map((message) => {
 						let msgKey = uuid.v4()
 
 						return (
@@ -24,7 +71,7 @@ export default class ChatWindow extends Component {
 						)
 					})}
 				</div>
-				<MessageInput socket={ socket } />
+				<MessageInput socket={ socket } emitMessage={ this.emitMessage.bind(this) } roomId={ roomId } user={ user } />
 			</div>
 		)
 	}

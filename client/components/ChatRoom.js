@@ -9,7 +9,6 @@ export default class ChatRoom extends Component {
 		this.state = {
 			socket: io.connect(`${socketUrl}:3000`),
 			roomId: roomId,
-			messages: [],
 			user: {	
 				userId: userId,
 				email: email,
@@ -20,7 +19,11 @@ export default class ChatRoom extends Component {
 	}
 
 	componentDidMount() {
+		//get messages
 		this.fetchMessages(this.state.roomId)
+
+		//join chatroom
+		this.state.socket.emit('join-chat', this.state.roomId)
 	}
 
 	fetchMessages(roomId) {
@@ -37,8 +40,7 @@ export default class ChatRoom extends Component {
 				<div className='row'>
 					<ChatWindow socket={ this.state.socket }
 								roomId={ this.state.roomId }
-								user={ this.state.user }
-								messages={ this.state.messages } />
+								user={ this.state.user } />
 				</div>
 			</div>
 		)

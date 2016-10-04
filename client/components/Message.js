@@ -17,7 +17,7 @@ export default class Message extends Component {
 		return (
 			<div className={ msgClass } >
 				<p className='msg--userId'>{message.userId}</p>
-				<p className='msg--text'><span className='msg--timestamp'>{message.sentAt}</span>: {message.message}</p>
+				<p className='msg--text'><span className='msg--timestamp'></span>: {message.message}</p>
 				
 				<hr />
 			</div>
